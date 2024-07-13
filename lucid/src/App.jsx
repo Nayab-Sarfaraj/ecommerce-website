@@ -17,6 +17,7 @@ import UpdatePassword from "./components/User/UpdatePassword";
 import UserOptions from "./components/User/UserOptions";
 import Footer from "./components/layout/Footer";
 import Header from "./components/layout/Header";
+import Cart from "./components/Cart/Cart";
 function App() {
   const dispatch = useDispatch();
   const isAuthenticated = useSelector(state => state.user.isAuthenticated)
@@ -37,7 +38,7 @@ function App() {
     <Router>
       <ToastContainer
         position="top-right"
-        autoClose={5000}
+        autoClose={200}
         hideProgressBar={false}
         newestOnTop={false}
         closeOnClick
@@ -65,7 +66,9 @@ function App() {
           <Route path="/account" element={<Profile />} />
           <Route path="/me/update" element={<EditProfile />} ></Route>
           <Route path="/password/update" element={<UpdatePassword />} />
+
         </Route>
+        <Route path="/cart" element={<Cart />} />
       </Routes>
       <Footer />
       <ToastContainer />

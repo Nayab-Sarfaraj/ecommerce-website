@@ -4,20 +4,24 @@ import ListAltIcon from '@mui/icons-material/ListAlt';
 import PersonIcon from '@mui/icons-material/Person';
 import { Backdrop, SpeedDial, SpeedDialAction } from '@mui/material';
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { LogoutUser } from '../../Store/Slice/userSlice';
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import ShoppingCart from '@mui/icons-material/ShoppingCart';
 const UserOptions = ({ user }) => {
     const dispatch = useDispatch()
     const [open, setOpen] = useState()
     const navigate = useNavigate()
+    const cartItems = useSelector(state => state.cart.cart.cartItems)
+    console.log(cartItems.length)
     const orders = () => navigate("/orders")
 
     const account = () => navigate("/account")
 
     const dashboard = () => navigate("/dashboard")
-
+    const toCart = () => navigate("/cart")
     const logoutUser = async () => {
         const res = await dispatch(LogoutUser())
         console.log(res)
@@ -28,6 +32,7 @@ const UserOptions = ({ user }) => {
         { icon: <ListAltIcon />, name: "Orders", func: orders },
         { icon: <PersonIcon />, name: "Profile", func: account },
         { icon: <ExitToAppIcon />, name: "Logout", func: logoutUser },
+        { icon: <ShoppingCart style={{ color: cartItems.length > 0 ? "#256cdf" : "unset" }} />, name: `Cart [${cartItems.length}]`, func: toCart }
     ];
 
     if (user.role === "admin") {

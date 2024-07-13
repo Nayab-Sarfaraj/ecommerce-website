@@ -4,7 +4,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import ReactStars from "react-rating-stars-component";
 import Review from "./Review";
-// lucid\src\images\Profile.png
+import { addToCart } from "../Store/Slice/cartSlice";
+import { toast } from "react-toastify"
 
 const SingleProduct = () => {
   const [quantity, setQuantity] = useState(1);
@@ -19,7 +20,7 @@ const SingleProduct = () => {
   const status = useSelector((state) => state.singleProduct.status);
   // accessing the error message if it exists
   const message = useDispatch((state) => state.singleProduct.data.message);
-  console.log(status);
+  console.log(product)
   if (status === "error") {
     alert(message);
     return;
@@ -31,10 +32,14 @@ const SingleProduct = () => {
     }
   };
   const increaseQuantity = () => {
-    if (quantity >= 50) return;
+    if (quantity >= product.Stock) return;
     setQuantity(quantity + 1);
   };
+  const handleAddToCart = async () => {
 
+    await dispatch(addToCart({ id: product._id, quantity }))
+    toast.success("Item added to cart")
+  }
   return (
     <>
       <div className="md:w-full w-auto h-auto md:h-screen  bg-white flex  md:flex-row flex-col items-center justify-center md:p-10 p-0">
@@ -84,7 +89,7 @@ const SingleProduct = () => {
               >
                 -
               </button>
-              <p className="bg-white px-3 py-1">{quantity}</p>
+              <p className="bg-white px-3 py-1" >{quantity}</p>
               <button
                 className="bg-black text-white px-2 py-1"
                 onClick={increaseQuantity}
@@ -92,7 +97,8 @@ const SingleProduct = () => {
                 +
               </button>
             </div>
-            <button className="px-5 py-1 bg-[#FF6347] rounded-full text-white">
+            <button className="px-5 py-1 bg-[#FF6347] rounded-full text-white" onClick={handleAddToCart}
+            >
               {" "}
               Add to Cart
             </button>
@@ -121,7 +127,7 @@ const SingleProduct = () => {
         </div>
 
         {/* product details section ends here */}
-      </div>
+      </div >
       <div className="flex items-center justify-center  flex-col">
         <h3 className="text-xl">Reviews</h3>
 
